@@ -23,12 +23,12 @@ public:
 
     double predict(const vector<double>& entradas) const override {
         if (entradas.size() != pesos.size()) {
-            cerr << "Erro: Número de entradas não corresponde ao número de pesos!" << endl;
+            cout << "Erro: NÃºmero de entradas nÃ£o corresponde ao nÃºmero de pesos!";
             return 0.0;
         }
 
         double soma = bias;
-        for (size_t i = 0; i < entradas.size(); ++i) {
+        for (int i = 0; i < entradas.size(); ++i) {
             soma += entradas[i] * pesos[i];
         }
 
@@ -40,18 +40,23 @@ int main() {
     vector<Neuronio*> neuronios;
     neuronios.push_back(new NeuronioReLU({0.2, 0.4}, -1.5));  // Caso 1
     neuronios.push_back(new NeuronioReLU({0.2, 0.4}, -0.5));  // Caso 2
+    neuronios.push_back(new NeuronioReLU({-0.1, 0.5}, 0.2));  // Caso 3
+    neuronios.push_back(new NeuronioReLU({0.3, -0.2}, 0.1));  // Caso 4
+    neuronios.push_back(new NeuronioReLU({0.0, 0.0}, 0.0));   // Caso 5
 
     vector<vector<double>> entradas = {
         {0.3, 2.0},  // Caso 1
         {0.3, 2.0},  // Caso 2
+        {1.0, -1.0}, // Caso 3
+        {2.0, 3.0},  // Caso 4
+        {0.0, 0.0}   // Caso 5
     };
 
-    for (size_t i = 0; i < neuronios.size(); ++i) {
-        cout << "Saída do Neurônio " << i + 1 << " (ReLU): "
+    for (int i = 0; i < neuronios.size(); i++) {
+        cout << "SaÃ­da do NeurÃ´nio " << i + 1 << " (ReLU): "
              << neuronios[i]->predict(entradas[i]) << endl;
     }
-    for (auto neur : neuronios) {
-        delete neur;
-    }
-    return 0;
+
+    for (int i = 0; i < neuronios.size(); i++)
+        delete neuronios[i];
 }
